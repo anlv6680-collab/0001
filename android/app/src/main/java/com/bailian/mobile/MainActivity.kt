@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         webView.settings.allowContentAccess = true
         webView.webViewClient = WebViewClient()
         webView.webChromeClient = WebChromeClient()
-        webView.loadUrl(BuildConfig.WEB_APP_URL)
+        webView.loadUrl("http://114.215.208.10")
     }
 
     override fun onBackPressed() {
