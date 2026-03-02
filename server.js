@@ -8,6 +8,7 @@ const APP_ID = process.env.BAILIAN_APP_ID || '16fb52ba1c734803acd1b491467e7a39';
 const API_KEY = process.env.DASHSCOPE_API_KEY || '';
 const BAILIAN_ENDPOINT = process.env.BAILIAN_ENDPOINT || `https://dashscope.aliyuncs.com/api/v1/apps/${APP_ID}/completion`;
 const PUBLIC_DIR = path.join(__dirname, 'public');
+const MAX_BODY_BYTES = 20 * 1024 * 1024;
 
 function contentType(filePath) {
   if (filePath.endsWith('.html')) return 'text/html; charset=utf-8';
@@ -79,6 +80,11 @@ function readBody(req) {
 }
 
 async function handleSolve(req, res) {
+  const contentLength = Number(req.headers['content-length'] || 0);
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return sendJson(res, 413, { error: '请求体过大' });
+  }
+
   const raw = await readBody(req);
   let body;
   try {
