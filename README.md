@@ -47,8 +47,11 @@ docker run -d --name bailian-mobile -p 3000:3000 --env-file .env bailian-mobile
 3. 输入你部署后的 HTTPS 地址（例如 `https://your-domain.com`），会写入 Android WebView 加载地址。
 4. 等待完成后，在该次 workflow 的 Artifacts 下载 `bailian-mobile-debug-apk`。
 5. 解压得到 `app-debug.apk`，发送到安卓手机安装。
+6. 首次打开 APP 时，如果地址还是占位符，应用会弹窗让你输入真实部署地址（例如 `https://your-domain.com`）。
 
 > 说明：`android/` 是 WebView 壳应用，安装后会直接打开你部署的网页服务。
+
+> 常见问题：如果安装后看到的是其它站点（例如某个 8000 端口默认页），通常是打包时 `WEB_APP_URL` 填错了。现在 APP 首次启动会允许手动修正地址并保存。
 
 ## 4. 环境变量
 
