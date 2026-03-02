@@ -28,6 +28,19 @@ jobs:
           yes | sdkmanager --licenses
           sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
 
+
+      - name: Validate WEB_APP_URL input
+        run: |
+          URL='${{ inputs.web_app_url }}'
+          if [ -z "$URL" ]; then
+            echo "WEB_APP_URL is required" >&2
+            exit 1
+          fi
+          if [ "$URL" = "https://your-domain.example.com" ]; then
+            echo "Please provide your real deployed URL, not the placeholder default" >&2
+            exit 1
+          fi
+
       - name: Build debug APK
         working-directory: android
         env:
