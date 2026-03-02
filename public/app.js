@@ -10,13 +10,33 @@ const showQrBtn = document.getElementById('showQrBtn');
 const qrSection = document.getElementById('qrSection');
 const qrImage = document.getElementById('qrImage');
 const installUrlText = document.getElementById('installUrl');
+const apiKeyInput = document.getElementById('apiKey');
+const rememberKeyCheckbox = document.getElementById('rememberKey');
 
 let latestAnswer = '';
 let deferredInstallPrompt = null;
+const API_KEY_STORAGE = 'bailian_api_key';
 
 function setStatus(text, isError = false) {
   statusBox.textContent = text;
   statusBox.style.color = isError ? '#b91c1c' : '#0f766e';
+}
+
+function loadSavedApiKey() {
+  const saved = localStorage.getItem(API_KEY_STORAGE);
+  if (saved) {
+    apiKeyInput.value = saved;
+    rememberKeyCheckbox.checked = true;
+  }
+}
+
+function persistApiKey() {
+  const apiKey = apiKeyInput.value.trim();
+  if (rememberKeyCheckbox.checked && apiKey) {
+    localStorage.setItem(API_KEY_STORAGE, apiKey);
+  } else {
+    localStorage.removeItem(API_KEY_STORAGE);
+  }
 }
 
 function fileToDataUrl(file) {
@@ -59,6 +79,8 @@ installBtn.addEventListener('click', async () => {
 });
 
 showQrBtn.addEventListener('click', buildQr);
+rememberKeyCheckbox.addEventListener('change', persistApiKey);
+apiKeyInput.addEventListener('blur', persistApiKey);
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {
@@ -73,13 +95,16 @@ form.addEventListener('submit', async (event) => {
 
   try {
     const question = document.getElementById('question').value.trim();
+    const apiKey = apiKeyInput.value.trim();
     const file = imageInput.files[0];
     const imageDataUrl = file ? await fileToDataUrl(file) : '';
+
+    persistApiKey();
 
     const response = await fetch('/api/solve', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question, imageDataUrl })
+      body: JSON.stringify({ question, imageDataUrl, apiKey })
     });
 
     const data = await response.json();
@@ -105,3 +130,5 @@ openPrintBtn.addEventListener('click', () => {
   win.document.write(html);
   win.document.close();
 });
+
+loadSavedApiKey();

@@ -55,10 +55,6 @@ function readBody(req) {
 }
 
 async function handleSolve(req, res) {
-  if (!API_KEY) {
-    return sendJson(res, 500, { error: '服务器未配置 DASHSCOPE_API_KEY，请在环境变量中设置。' });
-  }
-
   const raw = await readBody(req);
   let body;
   try {
@@ -69,6 +65,12 @@ async function handleSolve(req, res) {
 
   const question = String(body.question || '').trim();
   const imageDataUrl = String(body.imageDataUrl || '').trim();
+  const requestApiKey = String(body.apiKey || '').trim();
+  const finalApiKey = requestApiKey || API_KEY;
+
+  if (!finalApiKey) {
+    return sendJson(res, 400, { error: '请先在 APP 里输入阿里云百炼 API Key，或在服务端配置 DASHSCOPE_API_KEY。' });
+  }
 
   if (!question && !imageDataUrl) {
     return sendJson(res, 400, { error: '请至少输入题目文字或上传图片。' });
@@ -89,7 +91,7 @@ async function handleSolve(req, res) {
   const upstream = await fetch(BAILIAN_ENDPOINT, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${API_KEY}`,
+      Authorization: `Bearer ${finalApiKey}`,
       'Content-Type': 'application/json',
       'X-DashScope-SSE': 'disable'
     },

@@ -6,6 +6,7 @@
 - 将内容提交到阿里云百炼应用：`初中全科智慧提分系统-全流程`（App ID: `16fb52ba1c734803acd1b491467e7a39`）。
 - 接收智能体结果后，生成带 MathJax 渲染能力的可打印 HTML 页面。
 - 支持 PWA 安装（添加到主屏幕）和安装二维码展示。
+- 支持在安卓手机 APP 页面直接输入百炼 API Key（可选择仅本机记住）。
 
 ## 1. 安装与启动
 
@@ -19,7 +20,7 @@ npm start
 
 ## 2. 环境变量
 
-- `DASHSCOPE_API_KEY`：阿里云百炼 API Key（必填）
+- `DASHSCOPE_API_KEY`：阿里云百炼 API Key（可选；若不配置，可在 APP 页面输入）
 - `BAILIAN_APP_ID`：默认已填目标应用 ID
 - `BAILIAN_ENDPOINT`：可选，默认使用 `https://dashscope.aliyuncs.com/api/v1/apps/${BAILIAN_APP_ID}/completion`
 - `PORT`：服务端口
@@ -41,6 +42,7 @@ npm start
 前端提交 `application/json` 到 `/api/solve`：
 - `question`：题目文本
 - `imageDataUrl`：base64 Data URL 图片（可选）
+- `apiKey`：阿里云百炼 API Key（可选，优先级高于服务端环境变量）
 
 前端在浏览器内把图片转换为 base64 Data URL，服务端再放入 `input.image_list` / `input.images` 转发至百炼应用。
 

@@ -59,9 +59,29 @@ label {
 }
 
 textarea,
-input[type='file'] {
+input[type='file'],
+input[type='password'] {
   width: 100%;
   box-sizing: border-box;
+}
+
+
+input[type='password'] {
+  border-radius: 10px;
+  border: 1px solid #cfd5e2;
+  padding: 12px;
+  font-size: 16px;
+}
+
+.remember-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 400;
+}
+
+.remember-row input {
+  width: auto;
 }
 
 textarea {
