@@ -1,0 +1,17 @@
+{
+  "name": "初中全科智慧提分助手",
+  "short_name": "智慧提分",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#2563eb",
+  "description": "拍照或输入题目，调用阿里云百炼工作流并生成可打印 MathJax 结果页",
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

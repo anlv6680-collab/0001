@@ -1,0 +1,107 @@
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f5f7fb;
+  color: #1e2330;
+}
+
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  margin-top: 0;
+}
+
+.hint {
+  color: #4b5568;
+}
+
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 22px rgba(30, 35, 48, 0.08);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.install-card h2 {
+  margin-top: 0;
+}
+
+.qr-section {
+  margin-top: 12px;
+}
+
+#qrImage {
+  width: 220px;
+  max-width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.url-text {
+  word-break: break-all;
+  color: #334155;
+  font-size: 14px;
+}
+
+label {
+  display: block;
+  margin: 10px 0 8px;
+  font-weight: 600;
+}
+
+textarea,
+input[type='file'] {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+textarea {
+  border-radius: 10px;
+  border: 1px solid #cfd5e2;
+  padding: 12px;
+  font-size: 16px;
+}
+
+button {
+  background: #2563eb;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-top: 14px;
+  font-size: 15px;
+}
+
+button:disabled {
+  background: #94a3b8;
+}
+
+.status {
+  margin: 10px 0;
+  min-height: 22px;
+}
+
+.hidden {
+  display: none;
+}
+
+.actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#rendered {
+  white-space: pre-wrap;
+  line-height: 1.7;
+}

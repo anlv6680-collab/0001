@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>初中全科智慧提分助手</title>
+    <meta name="theme-color" content="#2563eb" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="/icons/icon.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>初中全科智慧提分助手</h1>
+      <p class="hint">支持拍照/选图 + 文字题目，调用阿里云百炼工作流并生成可打印 MathJax 页面。</p>
+
+      <section class="card install-card">
+        <h2>安装到手机</h2>
+        <p>1）在手机浏览器打开本页面；2）点击“安装应用”或“添加到主屏幕”；3）也可扫码在手机打开安装。</p>
+        <div class="actions">
+          <button id="installBtn" type="button" disabled>安装应用</button>
+          <button id="showQrBtn" type="button">显示安装二维码</button>
+        </div>
+        <div id="qrSection" class="qr-section hidden">
+          <img id="qrImage" alt="安装二维码" />
+          <p id="installUrl" class="url-text"></p>
+        </div>
+      </section>
+
+      <form id="solveForm" class="card">
+        <label for="question">题目文字</label>
+        <textarea id="question" name="question" rows="5" placeholder="请输入题目，可包含公式描述"></textarea>
+
+        <label for="imageInput">拍照或选择图片</label>
+        <input id="imageInput" name="image" type="file" accept="image/*" capture="environment" />
+
+        <button type="submit" id="submitBtn">提交到百炼工作流</button>
+      </form>
+
+      <section id="status" class="status"></section>
+
+      <section id="resultSection" class="card hidden">
+        <h2>智能体返回结果</h2>
+        <div id="rendered"></div>
+        <div class="actions">
+          <button id="openPrintBtn" type="button">打开可打印 MathJax 页面</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
