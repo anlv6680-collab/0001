@@ -5,16 +5,10 @@ const rendered = document.getElementById('rendered');
 const submitBtn = document.getElementById('submitBtn');
 const openPrintBtn = document.getElementById('openPrintBtn');
 const imageInput = document.getElementById('imageInput');
-const installBtn = document.getElementById('installBtn');
-const showQrBtn = document.getElementById('showQrBtn');
-const qrSection = document.getElementById('qrSection');
-const qrImage = document.getElementById('qrImage');
-const installUrlText = document.getElementById('installUrl');
 const apiKeyInput = document.getElementById('apiKey');
 const rememberKeyCheckbox = document.getElementById('rememberKey');
 
 let latestAnswer = '';
-let deferredInstallPrompt = null;
 const API_KEY_STORAGE = 'bailian_api_key';
 
 function setStatus(text, isError = false) {
@@ -53,40 +47,8 @@ function buildMathJaxPrintableHtml(content) {
   return `<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>打印版-智能解题结果</title><script>window.MathJax={tex:{inlineMath:[['$','$'],['\\\\(','\\\\)']],displayMath:[['$$','$$'],['\\\\[','\\\\]']]},svg:{fontCache:'global'}};</script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script><style>body{font-family:'Times New Roman',serif;margin:24px;line-height:1.8}h1{margin-top:0}pre{white-space:pre-wrap;font-family:inherit}@media print{button{display:none}}</style></head><body><h1>智能解题结果（MathJax）</h1><button onclick="window.print()">打印</button><pre>${escaped}</pre></body></html>`;
 }
 
-function buildQr() {
-  const url = window.location.href;
-  const qrApi = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(url)}`;
-  qrImage.src = qrApi;
-  installUrlText.textContent = url;
-  qrSection.classList.remove('hidden');
-}
-
-window.addEventListener('beforeinstallprompt', (event) => {
-  event.preventDefault();
-  deferredInstallPrompt = event;
-  installBtn.disabled = false;
-});
-
-installBtn.addEventListener('click', async () => {
-  if (!deferredInstallPrompt) {
-    setStatus('当前浏览器未触发安装提示，请使用“添加到主屏幕”。', true);
-    return;
-  }
-  deferredInstallPrompt.prompt();
-  await deferredInstallPrompt.userChoice;
-  deferredInstallPrompt = null;
-  installBtn.disabled = true;
-});
-
-showQrBtn.addEventListener('click', buildQr);
 rememberKeyCheckbox.addEventListener('change', persistApiKey);
 apiKeyInput.addEventListener('blur', persistApiKey);
-
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/sw.js').catch(() => {
-    setStatus('离线能力注册失败，但不影响正常使用。', true);
-  });
-}
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();

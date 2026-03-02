@@ -31,26 +31,9 @@ h1 {
   margin-bottom: 16px;
 }
 
-.install-card h2 {
-  margin-top: 0;
-}
 
-.qr-section {
-  margin-top: 12px;
-}
 
-#qrImage {
-  width: 220px;
-  max-width: 100%;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-}
 
-.url-text {
-  word-break: break-all;
-  color: #334155;
-  font-size: 14px;
-}
 
 label {
   display: block;
