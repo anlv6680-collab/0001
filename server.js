@@ -42,19 +42,26 @@ function sendJson(res, status, payload) {
 
 function readBody(req) {
   return new Promise((resolve, reject) => {
+    const MAX_BODY_BYTES = 20 * 1024 * 1024;
     let data = '';
+    let size = 0;
     let done = false;
 
     req.on('data', (chunk) => {
       if (done) return;
-      data += chunk;
-      if (data.length > 20 * 1024 * 1024) {
+
+      size += chunk.length;
+      if (size > MAX_BODY_BYTES) {
         done = true;
         const error = new Error('请求体过大');
         error.statusCode = 413;
+        req.pause();
         req.destroy(error);
         reject(error);
+        return;
       }
+
+      data += chunk.toString();
     });
 
     req.on('end', () => {
