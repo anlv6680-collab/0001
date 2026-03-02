@@ -1,0 +1,10 @@
+{
+  "name": "bailian-mathjax-mobile-app",
+  "version": "1.0.0",
+  "description": "Mobile-friendly app for sending questions/images to Alibaba Bailian workflow and rendering printable MathJax HTML",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  }
+}

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>初中全科智慧提分助手</title>
+    <meta name="theme-color" content="#2563eb" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>初中全科智慧提分助手</h1>
+      <p class="hint">支持拍照/选图 + 文字题目，调用阿里云百炼工作流并生成可打印 MathJax 页面。</p>
+
+      
+
+      <form id="solveForm" class="card">
+        <label for="apiKey">阿里云百炼 API Key（安卓可直接填写）</label>
+        <input id="apiKey" name="apiKey" type="password" placeholder="sk-..." autocomplete="off" />
+        <label class="remember-row"><input id="rememberKey" type="checkbox" /> 记住到本机（仅当前手机浏览器）</label>
+
+        <label for="question">题目文字</label>
+        <textarea id="question" name="question" rows="5" placeholder="请输入题目，可包含公式描述"></textarea>
+
+        <label for="imageInput">拍照或选择图片</label>
+        <input id="imageInput" name="image" type="file" accept="image/*" capture="environment" />
+
+        <button type="submit" id="submitBtn">提交到百炼工作流</button>
+      </form>
+
+      <section id="status" class="status"></section>
+
+      <section id="resultSection" class="card hidden">
+        <h2>智能体返回结果</h2>
+        <div id="rendered"></div>
+        <div class="actions">
+          <button id="openPrintBtn" type="button">打开可打印 MathJax 页面</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
