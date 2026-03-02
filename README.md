@@ -5,30 +5,63 @@
 - 支持输入题目文字。
 - 将内容提交到阿里云百炼应用：`初中全科智慧提分系统-全流程`（App ID: `16fb52ba1c734803acd1b491467e7a39`）。
 - 接收智能体结果后，生成带 MathJax 渲染能力的可打印 HTML 页面。
-- 支持在安卓手机 APP 页面直接输入百炼 API Key（可选择仅本机记住）。
+- 支持在安卓手机页面直接输入百炼 API Key（可选择仅本机记住）。
 
-## 1. 安装与启动
+## 1. 本地启动
 
 ```bash
 cp .env.example .env
-# 编辑 .env 填入 DASHSCOPE_API_KEY
-npm start
+# 可不填 DASHSCOPE_API_KEY，改为在手机页面输入
+node server.js
 ```
 
 打开：`http://localhost:3000`
 
-## 2. 环境变量
+## 2. 部署（中国大陆服务器）
+
+### 方式 A：直接 Node 运行
+```bash
+# 服务器上
+git clone <your-repo>
+cd <your-repo>
+cp .env.example .env
+# 按需填写 DASHSCOPE_API_KEY
+nohup node server.js > app.log 2>&1 &
+```
+
+### 方式 B：Docker 部署
+```bash
+docker build -t bailian-mobile .
+docker run -d --name bailian-mobile -p 3000:3000 --env-file .env bailian-mobile
+```
+
+建议给域名配置 HTTPS（Nginx/Caddy 反代均可），安卓 WebView 与拍照上传体验更稳定。
+
+## 3. 打包安卓 APK（GitHub Actions 自动构建）
+
+仓库内已提供工作流：`.github/workflows/build-android-apk.yml`。
+
+步骤：
+1. 把代码推送到 GitHub 仓库。
+2. 在 GitHub → Actions → `Build Android APK` → `Run workflow`。
+3. 输入你部署后的 HTTPS 地址（例如 `https://your-domain.com`），会写入 Android WebView 加载地址。
+4. 等待完成后，在该次 workflow 的 Artifacts 下载 `bailian-mobile-debug-apk`。
+5. 解压得到 `app-debug.apk`，发送到安卓手机安装。
+
+> 说明：`android/` 是 WebView 壳应用，安装后会直接打开你部署的网页服务。
+
+## 4. 环境变量
 
 - `DASHSCOPE_API_KEY`：阿里云百炼 API Key（可选；若不配置，可在 APP 页面输入）
 - `BAILIAN_APP_ID`：默认已填目标应用 ID
 - `BAILIAN_ENDPOINT`：可选，默认使用 `https://dashscope.aliyuncs.com/api/v1/apps/${BAILIAN_APP_ID}/completion`
 - `PORT`：服务端口
 
-## 3. 结果打印
+## 5. 结果打印
 
 当结果返回后，点击“打开可打印 MathJax 页面”，新页面内点击“打印”即可导出或打印。
 
-## 4. 接口说明
+## 6. 接口说明
 
 前端提交 `application/json` 到 `/api/solve`：
 - `question`：题目文本
