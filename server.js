@@ -43,14 +43,31 @@ function sendJson(res, status, payload) {
 function readBody(req) {
   return new Promise((resolve, reject) => {
     let data = '';
+    let done = false;
+
     req.on('data', (chunk) => {
+      if (done) return;
       data += chunk;
       if (data.length > 20 * 1024 * 1024) {
-        reject(new Error('请求体过大'));
+        done = true;
+        const error = new Error('请求体过大');
+        error.statusCode = 413;
+        req.destroy(error);
+        reject(error);
       }
     });
-    req.on('end', () => resolve(data));
-    req.on('error', reject);
+
+    req.on('end', () => {
+      if (done) return;
+      done = true;
+      resolve(data);
+    });
+
+    req.on('error', (error) => {
+      if (done) return;
+      done = true;
+      reject(error);
+    });
   });
 }
 
@@ -154,7 +171,8 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('Method Not Allowed');
   } catch (error) {
-    sendJson(res, 500, { error: '服务异常', details: error.message });
+    const status = error?.statusCode || 500;
+    sendJson(res, status, { error: status === 413 ? '请求体过大' : '服务异常', details: error.message });
   }
 });
 
